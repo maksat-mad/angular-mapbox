@@ -1,3 +1,7 @@
 body {
   margin: 0;
 }
+
+.mapboxgl-ctrl-logo, .mapboxgl-ctrl-attrib-inner, .mapboxgl-ctrl-zoom-in, .mapboxgl-ctrl-zoom-out, .mapboxgl-ctrl-compass {
+  display: none !important;
+}
