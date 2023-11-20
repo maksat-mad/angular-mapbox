@@ -1,6 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
-import { debounce } from 'lodash';
 
 @Component({
   selector: 'app-root',
@@ -11,8 +10,6 @@ export class AppComponent implements OnInit {
   @ViewChild('mapbox', { static: true }) mapDivElement!: ElementRef;
   map: mapboxgl.Map | undefined;
   marker: mapboxgl.Marker | undefined;
-  zoomInProgress = false;
-  position = { lat: 43.238949, lng: 76.889709 };
 
   ngOnInit() {
     this.map = new mapboxgl.Map({
@@ -31,66 +28,9 @@ export class AppComponent implements OnInit {
       .setLngLat({ lat: 43.238949, lng: 76.889709 })
       .addTo(this.map);
 
-    this.map.on('zoomstart', () => {
-      this.zoomInProgress = true;
-    });
-
-    this.map.on('zoomend', () => {
-      this.zoomInProgress = false;
-    });
-
-    // this.map.on('zoom', () => {
-    //   this.map?.setCenter(this.position);
-    // });
-
-    this.map.on('zoom', debounce(() => {
-      // this.map?.setCenter(this.position);
-
-      this.map?.flyTo({
-        center: this.position,
-        essential: true, // Ensures that the animation is not interrupted by user interactions
-      });
-    }, 70));
-
-    // this.map.on('zoom', () => {
-    //   this.map?.panTo(
-    //     this.position
-    //     // essential: true, // Ensures that the animation is not interrupted by user interactions
-    //   );
-    // });
-
-    // this.map.on('zoom', debounce(() => {
-    //   this.map?.setCenter(this.position);
-    // }, 50));
-
     this.map.on('move', () => {
-      if (!this.zoomInProgress) {
-        this.marker?.setLngLat(this.map ? this.map.getCenter() : { lat: 43.238949, lng: 76.889709 });
-        this.position = this.map ? this.map.getCenter() : { lat: 43.238949, lng: 76.889709 };
-      }
+      this.marker?.setLngLat(this.map ? this.map.getCenter() : { lat: 43.238949, lng: 76.889709 });
     });
-
-    // this.map.on('move', (event) => {
-    //   if (event.type === 'zoom') {
-    //     this.map?.setCenter(this.position);
-    //   } else {
-    //     if (!this.zoomInProgress) {
-    //       this.marker?.setLngLat(this.map ? this.map.getCenter() : { lat: 43.238949, lng: 76.889709 });
-    //       this.position = this.map ? this.map.getCenter() : { lat: 43.238949, lng: 76.889709 };
-    //     }
-    //   }
-    // });
-
-    // this.map.on('move', (event) => {
-    //   if (event.type === 'zoom') {
-    //     // Handle zoom-specific logic if needed
-    //   } else {
-    //     if (!this.zoomInProgress) {
-    //       this.marker?.setLngLat(this.map ? this.map.getCenter() : { lat: 43.238949, lng: 76.889709 });
-    //       this.position = this.map ? this.map.getCenter() : { lat: 43.238949, lng: 76.889709 };
-    //     }
-    //   }
-    // });
   }
 
   createCustomMarkerElement(imagePath: string) {
