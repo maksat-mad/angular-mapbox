@@ -30,9 +30,11 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/mapbox-gl/dist/mapbox-gl.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": ["mapbox-gl", "@2gis/mapgl"]
           },
           "configurations": {
             "production": {
@@ -93,7 +95,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/mapbox-gl/dist/mapbox-gl.css"
             ],
             "scripts": []
           }
